@@ -1,0 +1,19 @@
+{
+  "name": "smartorder-qa-demo",
+  "version": "1.0.0",
+  "main": "cypress.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:report": "cypress run --reporter mochawesome"
+
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "description": "",
+  "devDependencies": {
+    "cypress": "^15.5.0",
+    "mochawesome": "^7.1.4"
+  }
+}

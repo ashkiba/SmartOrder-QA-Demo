@@ -1,0 +1,47 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: qa_demo
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  order-service:
+    build: ./backend/order-service
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASS: rootpass
+      DB_NAME: qa_demo
+      AI_URL: http://ai-normalizer:8000
+      PAYMENT_URL: http://payment-service:3001
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+      - ai-normalizer
+      - payment-service
+
+  payment-service:
+    build: ./backend/payment-service
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASS: rootpass
+      DB_NAME: qa_demo
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mysql
+
+  ai-normalizer:
+    build: ./backend/ai-normalizer
+    ports:
+      - "8000:8000"
+
+volumes:
+  db_data:
