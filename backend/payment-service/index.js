@@ -11,7 +11,7 @@ const payments = new Set();
 app.post('/api/payment', async (req, res) => {
     const { orderId, amount } = req.body;
 
-    //  Input validation BEFORE calling order-service
+
     if (orderId === null || orderId === undefined) {
         return res.status(400).json({ status: 'FAILED', error: 'Missing orderId' });
     }

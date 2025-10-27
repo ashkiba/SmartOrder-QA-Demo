@@ -24,7 +24,6 @@ const orders = {
         items: ['item3'],
         totalAmount: 100
     }
-    // o_broken intentionally missing to simulate 404
 };
 
 app.get('/api/order/:orderId', async (req, res) => {
