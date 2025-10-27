@@ -19,19 +19,42 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
+      # --- Order Service ---
+      - name: Install order-service dependencies
         run: |
           cd backend/order-service
           npm ci
 
-      - name: Start order-service
+      - name: Start order-service in background
         run: |
           cd backend/order-service
-          npm run start &
-          npx wait-on http://localhost:3010
+          nohup npm run start > order.log 2>&1 &
+          sleep 5
+          echo "Checking order-service..."
+          curl -I http://localhost:3020/api/order/o_12345 || echo "order-service not responding"
+          cat order.log
 
-      - name: Install Cypress dependencies
+      # --- Payment Service ---
+      - name: Install payment-service dependencies
+        run: |
+          cd backend/payment-service
+          npm ci
+
+      - name: Start payment-service in background
+        run: |
+          cd backend/payment-service
+          nohup npm run start > payment.log 2>&1 &
+          sleep 5
+          echo "Checking payment-service..."
+          curl -I http://localhost:3010/api/payment || echo "payment-service not responding"
+          cat payment.log
+
+      # --- Cypress ---
+      - name: Install root dependencies
         run: npm ci
 
       - name: Run Cypress tests
+        env:
+          CYPRESS_baseUrl: http://localhost:3010
         run: npx cypress run --browser chrome --headless
+  ``
