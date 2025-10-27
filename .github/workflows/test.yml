@@ -17,29 +17,28 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies
+      - name: Install root dependencies
         run: npm install
 
-      # 🚀 Start order service
-      - name: Start order service
+      - name: Install backend services dependencies
         run: |
-          node backend/order-service.js &
-        env:
-          CI: true
+          cd backend/order-service && npm install
+          cd ../payment-service && npm install
+          cd ../../
 
-      # 🚀 Start payment service
-      - name: Start payment service
+      - name: Start backend services
         run: |
-          node backend/payment-service.js &
-        env:
-          CI: true
+          nohup node backend/order-service/index.js > order.log 2>&1 &
+          nohup node backend/payment-service/index.js > payment.log 2>&1 &
+          sleep 8
 
-      # 🕓 Wait until both services are ready
-      - name: Wait for both services
+      - name: Verify backend services are running
         run: |
-          npx wait-on http://localhost:3020/api/order/o_12345
-          npx wait-on http://localhost:3010/api/payment --timeout 60000
+          curl -v http://localhost:3020/api/order/o_12345
+          curl -v -X POST http://localhost:3010/api/reset-payments
 
-      # 🧪 Run Cypress tests
-      - name: Run Cypress
+      - name: Install Cypress
+        run: npx cypress install
+
+      - name: Run Cypress tests
         run: npx cypress run --browser chrome --headless
