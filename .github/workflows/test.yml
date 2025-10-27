@@ -21,23 +21,17 @@ jobs:
 
       - name: Install dependencies
         run: |
+          cd backend/order-service
           npm ci
-          npm install wait-on --save-dev
 
-      - name: Start backend server
+      - name: Start order-service
         run: |
+          cd backend/order-service
           npm run start &
           npx wait-on http://localhost:3010
 
-      - name: Run Cypress tests
-        run: |
-          npx cypress run --browser chrome --headless
+      - name: Install Cypress dependencies
+        run: npm ci
 
-      - name: Upload Cypress videos and screenshots (optional)
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-artifacts
-          path: |
-            cypress/videos
-            cypress/screenshots
+      - name: Run Cypress tests
+        run: npx cypress run --browser chrome --headless
