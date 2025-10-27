@@ -1,28 +1,31 @@
-name: Run Cypress Tests
+name: Run Cypress Tests and Upload Report
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  cypress-run:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run Cypress tests with mochawesome
-        run: npm run test:report
+      - name: Run Cypress tests
+        run: npx cypress run
 
-- name: Upload mochawesome report
-  uses: actions/upload-artifact@v4
-  with:
-    name: mochawesome-report
-    path: mochawesome-report/
+      - name: Upload mochawesome report
+        uses: actions/upload-artifact@v4
+        with:
+          name: mochawesome-report
+          path: mochawesome-report/
