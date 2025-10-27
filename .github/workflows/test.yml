@@ -18,14 +18,27 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Install Chrome
+        run: |
+          sudo apt update
+          sudo apt install -y wget
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo apt install -y ./google-chrome-stable_current_amd64.deb
+
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Run Cypress tests
-        run: npx cypress run --reporter mochawesome
+      - name: Run Cypress tests with mochawesome
+        run: |
+          npx cypress run --browser chrome --reporter mochawesome --reporter-options overwrite=false,html=false,json=true
 
-      - name: Upload mochawesome report
+      - name: Generate mochawesome HTML report
+        run: |
+          npx mochawesome-merge cypress/reports/*.json > mochawesome.json
+          npx mochawesome-report-generator mochawesome.json --reportDir mochawesome-report
+
+      - name: Upload mochawesome HTML report
         uses: actions/upload-artifact@v4
         with:
-          name: mochawesome-report
+          name: mochawesome-html
           path: mochawesome-report/
