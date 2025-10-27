@@ -2,43 +2,42 @@ name: Run Cypress Tests
 
 on:
   push:
+    branches: [ main ]
   pull_request:
+    branches: [ main ]
 
 jobs:
-  test:
+  cypress-run:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
-      - name: Install root dependencies
-        run: npm install
-
-      - name: Install backend services dependencies
+      - name: Install dependencies
         run: |
-          cd backend/order-service && npm install
-          cd ../payment-service && npm install
-          cd ../../
+          npm ci
+          npm install wait-on --save-dev
 
-      - name: Start backend services
+      - name: Start backend server
         run: |
-          nohup node backend/order-service/index.js > order.log 2>&1 &
-          nohup node backend/payment-service/index.js > payment.log 2>&1 &
-          sleep 8
-
-      - name: Verify backend services are running
-        run: |
-          curl -v http://localhost:3020/api/order/o_12345
-          curl -v -X POST http://localhost:3010/api/reset-payments
-
-      - name: Install Cypress
-        run: npx cypress install
+          npm run start &
+          npx wait-on http://localhost:3010
 
       - name: Run Cypress tests
-        run: npx cypress run --browser chrome --headless
+        run: |
+          npx cypress run --browser chrome --headless
+
+      - name: Upload Cypress videos and screenshots (optional)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-artifacts
+          path: |
+            cypress/videos
+            cypress/screenshots
