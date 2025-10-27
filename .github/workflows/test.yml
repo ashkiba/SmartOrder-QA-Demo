@@ -11,41 +11,41 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
-
-      - name: Install Chrome
-        run: |
-          sudo apt update
-          sudo apt install -y wget
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo apt install -y ./google-chrome-stable_current_amd64.deb
+          node-version: '20.10.0'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
+      - name: Start local server
+        run: npm start &
+        env:
+          NODE_ENV: test
+
+      - name: Wait for local server to be ready
+        run: npx wait-on http://localhost:3010
+
       - name: Create report directory
         run: mkdir -p cypress-report
 
-      - name: Run Cypress tests with mochawesome
+      - name: Run Cypress tests with Mochawesome
         run: |
-          npx cypress run --browser chrome \
+          npx cypress run --browser chrome --headless \
             --spec "cypress/e2e/**/*.cy.js" \
             --reporter mochawesome \
             --reporter-options reportDir=cypress-report,overwrite=false,html=false,json=true
 
-      - name: Generate mochawesome HTML report
+      - name: Generate Mochawesome HTML report
         run: |
-          ls cypress-report/
           npx mochawesome-merge cypress-report/*.json > mochawesome.json
           npx mochawesome-report-generator mochawesome.json --reportDir mochawesome-report
 
-      - name: Upload mochawesome HTML report
+      - name: Upload Mochawesome HTML report
         uses: actions/upload-artifact@v4
         with:
-          name: mochawesome-html
-          path: mochawesome-report/
+          name: mochaweso
