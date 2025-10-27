@@ -28,17 +28,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Create report directory
+        run: mkdir -p cypress-report
+
       - name: Run Cypress tests with mochawesome
         run: |
           npx cypress run --browser chrome \
             --reporter mochawesome \
-            --reporter-options overwrite=false,html=false,json=true \
-            --config reporterOptions.reportDir=cypress/reports/mocha
+            --reporter-options reportDir=cypress-report,overwrite=false,html=false,json=true
 
       - name: Generate mochawesome HTML report
         run: |
-          ls cypress/reports/mocha/
-          npx mochawesome-merge cypress/reports/mocha/*.json > mochawesome.json
+          ls cypress-report/
+          npx mochawesome-merge cypress-report/*.json > mochawesome.json
           npx mochawesome-report-generator mochawesome.json --reportDir mochawesome-report
 
       - name: Upload mochawesome HTML report
