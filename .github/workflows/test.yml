@@ -17,9 +17,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
 
-      # --- Order Service ---
       - name: Install order-service dependencies
         run: |
           cd backend/order-service
@@ -34,7 +33,6 @@ jobs:
           curl -I http://localhost:3020/api/order/o_12345 || echo "order-service not responding"
           cat order.log
 
-      # --- Payment Service ---
       - name: Install payment-service dependencies
         run: |
           cd backend/payment-service
@@ -49,12 +47,22 @@ jobs:
           curl -I http://localhost:3010/api/payment || echo "payment-service not responding"
           cat payment.log
 
-      # --- Cypress ---
       - name: Install root dependencies
         run: npm ci
+
+      - name: Install Cypress binary
+        run: npx cypress install
 
       - name: Run Cypress tests
         env:
           CYPRESS_baseUrl: http://localhost:3010
         run: npx cypress run --browser chrome --headless
-  ``
+
+      - name: Upload Cypress videos and screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-artifacts
+          path: |
+            cypress/videos
+            cypress/screenshots
