@@ -34,6 +34,7 @@ jobs:
       - name: Run Cypress tests with mochawesome
         run: |
           npx cypress run --browser chrome \
+            --spec "cypress/e2e/**/*.cy.js" \
             --reporter mochawesome \
             --reporter-options reportDir=cypress-report,overwrite=false,html=false,json=true
 
