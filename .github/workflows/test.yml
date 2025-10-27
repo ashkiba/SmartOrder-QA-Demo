@@ -1,44 +1,45 @@
-name: Run Cypress Tests and Upload Report
+name: Run Cypress Tests
 
 on:
   push:
-    branches:
-      - main
+  pull_request:
 
 jobs:
-  cypress-tests:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.10.0'
-          cache: 'npm'
+          node-version: 18
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Create report directory
-        run: mkdir -p cypress-report
-
-      - name: Run Cypress tests with Mochawesome
+      # 🚀 Start order service
+      - name: Start order service
         run: |
-          npx cypress run --browser chrome --headless \
-            --spec "cypress/e2e/**/*.cy.js" \
-            --reporter mochawesome \
-            --reporter-options reportDir=cypress-report,overwrite=false,html=false,json=true
+          node backend/order-service.js &
+        env:
+          CI: true
 
-      - name: Generate Mochawesome HTML report
+      # 🚀 Start payment service
+      - name: Start payment service
         run: |
-          npx mochawesome-merge cypress-report/*.json > mochawesome.json
-          npx mochawesome-report-generator mochawesome.json --reportDir mochawesome-report
+          node backend/payment-service.js &
+        env:
+          CI: true
 
-      - name: Upload Mochawesome HTML report
-        uses: actions/upload-artifact@v4
-        with:
-          name: mochawesome-html
-          path: mochawesome-report/
+      # 🕓 Wait until both services are ready
+      - name: Wait for both services
+        run: |
+          npx wait-on http://localhost:3020/api/order/o_12345
+          npx wait-on http://localhost:3010/api/payment --timeout 60000
+
+      # 🧪 Run Cypress tests
+      - name: Run Cypress
+        run: npx cypress run --browser chrome --headless
