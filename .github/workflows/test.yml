@@ -30,11 +30,15 @@ jobs:
 
       - name: Run Cypress tests with mochawesome
         run: |
-          npx cypress run --browser chrome --reporter mochawesome --reporter-options overwrite=false,html=false,json=true
+          npx cypress run --browser chrome \
+            --reporter mochawesome \
+            --reporter-options overwrite=false,html=false,json=true \
+            --config reporterOptions.reportDir=cypress/reports/mocha
 
       - name: Generate mochawesome HTML report
         run: |
-          npx mochawesome-merge cypress/reports/*.json > mochawesome.json
+          ls cypress/reports/mocha/
+          npx mochawesome-merge cypress/reports/mocha/*.json > mochawesome.json
           npx mochawesome-report-generator mochawesome.json --reportDir mochawesome-report
 
       - name: Upload mochawesome HTML report
