@@ -5,7 +5,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:report": "cypress run --reporter mochawesome"
-
   },
   "keywords": [],
   "author": "",
@@ -14,6 +13,7 @@
   "description": "",
   "devDependencies": {
     "cypress": "^15.5.0",
-    "mochawesome": "^7.1.4"
+    "mochawesome": "^7.1.4",
+    "wait-on": "^9.0.1"
   }
 }
