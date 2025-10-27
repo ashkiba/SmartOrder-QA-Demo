@@ -1,10 +1,6 @@
 name: Run Cypress Tests
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push]
 
 jobs:
   cypress-run:
@@ -25,8 +21,8 @@ jobs:
       - name: Run Cypress tests with mochawesome
         run: npm run test:report
 
-      - name: Upload test report
+      - name: Upload mochawesome report
         uses: actions/upload-artifact@v3
         with:
           name: mochawesome-report
-          path: mochawesome-report/mochawesome.html
+          path: mochawesome-report/
