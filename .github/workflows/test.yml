@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  test:
+  cypress-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Run Cypress tests
-        run: npx cypress run
+        run: npx cypress run --reporter mochawesome
 
       - name: Upload mochawesome report
         uses: actions/upload-artifact@v4
