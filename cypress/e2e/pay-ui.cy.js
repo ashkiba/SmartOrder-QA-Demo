@@ -1,5 +1,5 @@
 describe('Payment Form UI Test', () => {
-const formUrl = 'http://127.0.0.1:5500/frontend/payment-form.html';
+const formUrl = 'http://localhost:8080/payment-form.html';
 
     beforeEach(() => {
         cy.visit(formUrl);
