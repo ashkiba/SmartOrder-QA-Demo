@@ -47,16 +47,24 @@ jobs:
           curl -I http://localhost:3010/api/payment || echo "payment-service not responding"
           cat payment.log
 
+      - name: Start frontend server
+        run: |
+          nohup node frontend/server.js > frontend.log 2>&1 &
+          sleep 5
+          echo "Checking frontend server..."
+          curl -I http://localhost:8080/payment-form.html || echo "frontend server not responding"
+          cat frontend.log
+
       - name: Install root dependencies
         run: npm ci
 
       - name: Install Cypress binary
         run: npx cypress install
 
-      - name: Run Cypress tests
+      - name: Run Cypress tests with mochawesome
         env:
           CYPRESS_baseUrl: http://localhost:3010
-        run: npx cypress run --browser chrome --headless
+        run: npm run test:report
 
       - name: Upload Cypress videos and screenshots on failure
         if: failure()
@@ -66,3 +74,9 @@ jobs:
           path: |
             cypress/videos
             cypress/screenshots
+
+      - name: Upload mochawesome report
+        uses: actions/upload-artifact@v4
+        with:
+          name: mochawesome-report
+          path: mochawesome-report/
