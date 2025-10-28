@@ -1,17 +1,16 @@
-const { defineConfig } = require('cypress');
+const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: 'http://localhost:8080',
-    specPattern: 'cypress/e2e/**/*.cy.{js,ts}',
-    supportFile: 'cypress/support/e2e.js',
+    baseUrl: "http://localhost:3010",
     setupNodeEvents(on, config) {
-      return config;
-    }
+      // implement node event listeners here
+    },
+    supportFile: "cypress/support/e2e.js"
   },
-  reporter: 'mochawesome',
+  reporter: "mochawesome",
   reporterOptions: {
-    reportDir: 'mochawesome-report',
+    reportDir: "mochawesome-report",
     overwrite: false,
     html: true,
     json: true
