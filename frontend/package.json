@@ -1,0 +1,12 @@
+﻿{
+    "version":  "1.0.0",
+    "name":  "smartorder-frontend",
+    "description":  "Frontend server for SmartOrder QA Demo",
+    "scripts":  {
+                    "start":  "node server.js"
+                },
+    "dependencies":  {
+                         "express":  "^4.18.2"
+                     },
+    "main":  "server.js"
+}
