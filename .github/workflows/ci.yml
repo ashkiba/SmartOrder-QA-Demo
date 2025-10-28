@@ -2,9 +2,7 @@ name: CI
 
 on:
   pull_request:
-    branches: [ staging, production ]
-  push:
-    branches: [ main, staging, production ]
+    branches: [staging, production]
 
 jobs:
   build-and-test:
@@ -23,3 +21,12 @@ jobs:
 
       - name: Run unit tests
         run: npm test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: |
+            mochawesome-report/
+            test-results.xml

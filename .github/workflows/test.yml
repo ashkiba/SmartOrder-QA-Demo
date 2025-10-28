@@ -2,9 +2,9 @@ name: Run Cypress Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [staging]
 
 jobs:
   cypress-run:
@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install order-service dependencies
         working-directory: backend/order-service
@@ -48,7 +48,7 @@ jobs:
         working-directory: frontend
         run: npm ci
 
-      - name: Start frontend server (background) and wait for readiness
+      - name: Start frontend server and wait for readiness
         working-directory: frontend
         run: |
           nohup node server.js > frontend.log 2>&1 &
@@ -62,11 +62,9 @@ jobs:
           done
           if curl -sS http://localhost:8080/payment-form.html >/dev/null 2>&1; then
             echo "frontend up"
-            echo "first 200 lines of frontend.log:"
             sed -n '1,200p' frontend.log || true
           else
             echo "frontend did not start - dumping logs and exiting"
-            echo "last 200 lines of frontend.log:"
             tail -n 200 frontend.log || true
             ps aux | grep node || true
             exit 1
