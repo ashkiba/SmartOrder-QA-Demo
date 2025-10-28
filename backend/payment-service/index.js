@@ -11,7 +11,6 @@ const payments = new Set();
 app.post('/api/payment', async (req, res) => {
     const { orderId, amount } = req.body;
 
-
     if (orderId === null || orderId === undefined) {
         return res.status(400).json({ status: 'FAILED', error: 'Missing orderId' });
     }
@@ -19,9 +18,8 @@ app.post('/api/payment', async (req, res) => {
     if (
         typeof orderId !== 'string' ||
         orderId.trim() === '' ||
-        orderId.includes('<') ||
-        orderId.includes('>') ||
-        orderId.length > 100
+        orderId.length > 100 ||
+        !/^[a-zA-Z0-9_-]+$/.test(orderId)
     ) {
         return res.status(400).json({ status: 'FAILED', error: 'Invalid orderId' });
     }
