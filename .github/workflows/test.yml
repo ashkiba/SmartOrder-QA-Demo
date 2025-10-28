@@ -1,43 +1,99 @@
-name: CI
+name: Run Cypress Tests
 
 on:
   push:
+    branches: [ main ]
   pull_request:
+    branches: [ main ]
 
 jobs:
-  test:
+  cypress-run:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
+
+      - name: Install order-service dependencies
+        working-directory: backend/order-service
+        run: npm ci
+
+      - name: Start order-service in background
+        working-directory: backend/order-service
+        run: |
+          nohup npm run start > order.log 2>&1 &
+          sleep 5
+          echo "Checking order-service..."
+          curl -sS -I http://localhost:3020/api/order/o_12345 || (echo "order-service not responding" && cat order.log && exit 1)
+
+      - name: Install payment-service dependencies
+        working-directory: backend/payment-service
+        run: npm ci
+
+      - name: Start payment-service in background
+        working-directory: backend/payment-service
+        run: |
+          nohup npm run start > payment.log 2>&1 &
+          sleep 5
+          echo "Checking payment-service..."
+          curl -sS -I http://localhost:3010/api/payment || (echo "payment-service not responding" && cat payment.log && exit 1)
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Start frontend server (background) and wait for readiness
+        working-directory: frontend
+        run: |
+          nohup node server.js > frontend.log 2>&1 &
+          FRONTEND_PID=$!
+          echo "Frontend PID: $FRONTEND_PID"
+          n=0
+          until curl -sS http://localhost:8080/payment-form.html >/dev/null 2>&1 || [ $n -ge 60 ]; do
+            echo "waiting for frontend... ($n)"
+            n=$((n+1))
+            sleep 1
+          done
+          if curl -sS http://localhost:8080/payment-form.html >/dev/null 2>&1; then
+            echo "frontend up"
+            echo "first 200 lines of frontend.log:"
+            sed -n '1,200p' frontend.log || true
+          else
+            echo "frontend did not start - dumping logs and exiting"
+            echo "last 200 lines of frontend.log:"
+            tail -n 200 frontend.log || true
+            ps aux | grep node || true
+            exit 1
+          fi
 
       - name: Install root dependencies
         run: npm ci
 
-      - name: Install frontend dependencies
-        working-directory: ./frontend
-        run: npm ci
+      - name: Install Cypress binary
+        run: npx cypress install
 
-      - name: Start frontend server (background)
-        working-directory: ./frontend
-        run: |
-          nohup node server.js > frontend.log 2>&1 &
-          echo "FRONTEND_PID=$!" > frontend.pid
-          echo "started frontend pid $!"
-          sleep 1
+      - name: Run Cypress tests with mochawesome
+        env:
+          CYPRESS_baseUrl: http://localhost:3010
+        run: npm run test:report
 
-      - name: Wait for frontend to be ready
-        run: npx wait-on http://localhost:8080/payment-form.html --timeout 60000
+      - name: Upload Cypress videos and screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-artifacts
+          path: |
+            cypress/videos
+            cypress/screenshots
 
-      - name: Sanity curl check
-        run: |
-          set -eux
-          curl -v http://localhost:8080/payment-form.html
-
-      - name: Run Cypress tests
-        run: npx cypress run --reporter mochawesome
+      - name: Upload mochawesome report
+        uses: actions/upload-artifact@v4
+        with:
+          name: mochawesome-report
+          path: mochawesome-report/
