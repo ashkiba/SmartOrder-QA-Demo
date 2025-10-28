@@ -15,5 +15,8 @@
     "cypress": "^15.5.0",
     "mochawesome": "^7.1.4",
     "wait-on": "^9.0.1"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
   }
 }

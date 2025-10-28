@@ -1,0 +1,259 @@
+{
+  "stats": {
+    "suites": 4,
+    "tests": 6,
+    "passes": 6,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-10-28T07:02:22.253Z",
+    "end": "2025-10-28T07:02:22.679Z",
+    "duration": 426,
+    "testsRegistered": 6,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "b1dfd29c-e7bc-44b5-8576-40e14a9aae44",
+      "title": "",
+      "fullFile": "cypress\\e2e\\pay-security.cy.js",
+      "file": "cypress\\e2e\\pay-security.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "ae21f537-33da-4586-b0d6-a38fb4209621",
+          "title": "Payment API - Security and Injection Tests",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [],
+          "suites": [
+            {
+              "uuid": "05bb94da-a6c3-4e02-a97c-604588728819",
+              "title": "Invalid orderId values",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should reject SQL-like injection",
+                  "fullTitle": "Payment API - Security and Injection Tests Invalid orderId values should reject SQL-like injection",
+                  "timedOut": null,
+                  "duration": 80,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.request({\n  method: 'POST',\n  url: endpoint,\n  body: {\n    orderId: \"' OR 1=1 --\",\n    amount: 100\n  },\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(400);\n  expect(res.body.status).to.eq('FAILED');\n  expect(res.body).to.have.property('error', 'Invalid orderId');\n});",
+                  "err": {},
+                  "uuid": "b8bfa07c-24d7-4b22-9595-80c59caa7093",
+                  "parentUUID": "05bb94da-a6c3-4e02-a97c-604588728819",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should reject Unicode injection",
+                  "fullTitle": "Payment API - Security and Injection Tests Invalid orderId values should reject Unicode injection",
+                  "timedOut": null,
+                  "duration": 32,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.request({\n  method: 'POST',\n  url: endpoint,\n  body: {\n    orderId: '💣💥🔥',\n    amount: 100\n  },\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(400);\n  expect(res.body.status).to.eq('FAILED');\n  expect(res.body).to.have.property('error', 'Invalid orderId');\n});",
+                  "err": {},
+                  "uuid": "3f051e9a-637a-42a3-a4bc-e427123e799c",
+                  "parentUUID": "05bb94da-a6c3-4e02-a97c-604588728819",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should reject excessive whitespace",
+                  "fullTitle": "Payment API - Security and Injection Tests Invalid orderId values should reject excessive whitespace",
+                  "timedOut": null,
+                  "duration": 25,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.request({\n  method: 'POST',\n  url: endpoint,\n  body: {\n    orderId: ' '.repeat(500),\n    amount: 100\n  },\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(400);\n  expect(res.body.status).to.eq('FAILED');\n  expect(res.body).to.have.property('error', 'Invalid orderId');\n});",
+                  "err": {},
+                  "uuid": "f32e7154-abf0-43f2-bb89-99d3458ef877",
+                  "parentUUID": "05bb94da-a6c3-4e02-a97c-604588728819",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "b8bfa07c-24d7-4b22-9595-80c59caa7093",
+                "3f051e9a-637a-42a3-a4bc-e427123e799c",
+                "f32e7154-abf0-43f2-bb89-99d3458ef877"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 137,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "83824184-5256-465f-8119-96e7e8122bc5",
+              "title": "Invalid amount values",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should reject script injection in amount",
+                  "fullTitle": "Payment API - Security and Injection Tests Invalid amount values should reject script injection in amount",
+                  "timedOut": null,
+                  "duration": 38,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.request({\n  method: 'POST',\n  url: endpoint,\n  body: {\n    orderId: 'o_12345',\n    amount: \"<script>100</script>\"\n  },\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(400);\n  expect(res.body.status).to.eq('FAILED');\n  expect(res.body).to.have.property('error', 'Invalid amount');\n});",
+                  "err": {},
+                  "uuid": "751607c2-1cf5-4db9-a0fe-839c4469ab88",
+                  "parentUUID": "83824184-5256-465f-8119-96e7e8122bc5",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should reject excessively large amount",
+                  "fullTitle": "Payment API - Security and Injection Tests Invalid amount values should reject excessively large amount",
+                  "timedOut": null,
+                  "duration": 31,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.request({\n  method: 'POST',\n  url: endpoint,\n  body: {\n    orderId: 'o_12345',\n    amount: 1e12\n  },\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(400);\n  expect(res.body.status).to.eq('FAILED');\n  expect(res.body).to.have.property('error', 'Invalid amount');\n});",
+                  "err": {},
+                  "uuid": "54b26c60-8563-48dd-9ed1-5280ad74e1e0",
+                  "parentUUID": "83824184-5256-465f-8119-96e7e8122bc5",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "751607c2-1cf5-4db9-a0fe-839c4469ab88",
+                "54b26c60-8563-48dd-9ed1-5280ad74e1e0"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 69,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "92c7a058-4427-4457-bd10-6771b30a6a44",
+              "title": "Combined malformed payloads",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should reject mixed invalid orderId and amount",
+                  "fullTitle": "Payment API - Security and Injection Tests Combined malformed payloads should reject mixed invalid orderId and amount",
+                  "timedOut": null,
+                  "duration": 38,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.request({\n  method: 'POST',\n  url: endpoint,\n  body: {\n    orderId: '<script>alert(1)</script>',\n    amount: 'NaN'\n  },\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(400);\n  expect(res.body.status).to.eq('FAILED');\n});",
+                  "err": {},
+                  "uuid": "d4a4b732-0967-48f8-b927-240642d04f5d",
+                  "parentUUID": "92c7a058-4427-4457-bd10-6771b30a6a44",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "d4a4b732-0967-48f8-b927-240642d04f5d"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 38,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            }
+          ],
+          "passes": [],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 0,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "mochawesome-report",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}
