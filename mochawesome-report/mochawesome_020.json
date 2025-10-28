@@ -1,0 +1,143 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 3,
+    "passes": 3,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-10-28T06:46:50.902Z",
+    "end": "2025-10-28T06:46:56.099Z",
+    "duration": 5197,
+    "testsRegistered": 3,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "9d3b8da7-8acf-4aa5-b234-3659e034abcc",
+      "title": "",
+      "fullFile": "cypress\\e2e\\order.cy.js",
+      "file": "cypress\\e2e\\order.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "ff631e20-6c79-4365-8bb0-d7e4a4b5b56e",
+          "title": "Order Service API Tests",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should fetch an existing order successfully",
+              "fullTitle": "Order Service API Tests should fetch an existing order successfully",
+              "timedOut": null,
+              "duration": 65,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.request(`${baseUrl}/api/order/o_12345`).then(response => {\n  expect(response.status).to.eq(200);\n  expect(response.body).to.have.property('order');\n  expect(response.body.order).to.have.property('orderId', 'o_12345');\n  expect(response.body.order.items).to.include('item1');\n});",
+              "err": {},
+              "uuid": "4facd6f4-b92e-4d4e-bc60-6018b6079a38",
+              "parentUUID": "ff631e20-6c79-4365-8bb0-d7e4a4b5b56e",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should handle delayed orders (simulate 5s wait)",
+              "fullTitle": "Order Service API Tests should handle delayed orders (simulate 5s wait)",
+              "timedOut": null,
+              "duration": 5033,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.request(`${baseUrl}/api/order/o_slow`).then(response => {\n  expect(response.status).to.eq(200);\n  expect(response.body.order.orderId).to.eq('o_slow');\n});",
+              "err": {},
+              "uuid": "05ced5e8-8201-42f3-af1d-50c45c8861de",
+              "parentUUID": "ff631e20-6c79-4365-8bb0-d7e4a4b5b56e",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should return 404 for non-existent order",
+              "fullTitle": "Order Service API Tests should return 404 for non-existent order",
+              "timedOut": null,
+              "duration": 40,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.request({\n  url: `${baseUrl}/api/order/o_notfound`,\n  failOnStatusCode: false\n}).then(response => {\n  expect(response.status).to.eq(404);\n  expect(response.body).to.have.property('error', 'Order not found');\n});",
+              "err": {},
+              "uuid": "cb6c0933-12a9-4f88-ac0f-31b9ef81c3ef",
+              "parentUUID": "ff631e20-6c79-4365-8bb0-d7e4a4b5b56e",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "4facd6f4-b92e-4d4e-bc60-6018b6079a38",
+            "05ced5e8-8201-42f3-af1d-50c45c8861de",
+            "cb6c0933-12a9-4f88-ac0f-31b9ef81c3ef"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 5138,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "mochawesome-report",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}

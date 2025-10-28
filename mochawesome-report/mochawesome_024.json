@@ -1,0 +1,201 @@
+{
+  "stats": {
+    "suites": 3,
+    "tests": 4,
+    "passes": 4,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-10-28T06:47:13.340Z",
+    "end": "2025-10-28T06:47:13.589Z",
+    "duration": 249,
+    "testsRegistered": 4,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "f77cd11a-392d-45cf-847f-9425ffac5a3c",
+      "title": "",
+      "fullFile": "cypress\\e2e\\pay.cy.js",
+      "file": "cypress\\e2e\\pay.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "113ae125-1efe-4ef3-ac06-1ad8e2490d72",
+          "title": "🧾 Payment API - Functional Tests",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [],
+          "suites": [
+            {
+              "uuid": "e08d1dce-1780-4c7f-8727-643b6d5c2537",
+              "title": " Valid Payment Flow",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should process a valid payment request",
+                  "fullTitle": "🧾 Payment API - Functional Tests  Valid Payment Flow should process a valid payment request",
+                  "timedOut": null,
+                  "duration": 88,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const payload = {\n  orderId: 'o_12345',\n  amount: 100\n};\ncy.request({\n  method: 'POST',\n  url: endpoint,\n  body: payload\n}).then(res => {\n  expect(res.status).to.eq(200);\n  expect(res.body).to.have.property('status', 'SUCCESS');\n  expect(res.body).to.have.property('message');\n  expect(res.body.message).to.eq('Payment processed');\n});",
+                  "err": {},
+                  "uuid": "cedcbafb-493b-41e5-957f-76e44ad72b3b",
+                  "parentUUID": "e08d1dce-1780-4c7f-8727-643b6d5c2537",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "cedcbafb-493b-41e5-957f-76e44ad72b3b"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 88,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "b080073b-bd95-4214-8fdc-dc0e1aac0bef",
+              "title": " Invalid Payment Scenarios",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should fail when orderId is missing",
+                  "fullTitle": "🧾 Payment API - Functional Tests  Invalid Payment Scenarios should fail when orderId is missing",
+                  "timedOut": null,
+                  "duration": 28,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const payload = {\n  amount: 100\n};\ncy.request({\n  method: 'POST',\n  url: endpoint,\n  body: payload,\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(400);\n  expect(res.body).to.have.property('error');\n  expect(res.body.error).to.eq('Missing orderId');\n});",
+                  "err": {},
+                  "uuid": "6a166e25-7842-441b-af4a-a71ed5e536f4",
+                  "parentUUID": "b080073b-bd95-4214-8fdc-dc0e1aac0bef",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should fail when amount is negative",
+                  "fullTitle": "🧾 Payment API - Functional Tests  Invalid Payment Scenarios should fail when amount is negative",
+                  "timedOut": null,
+                  "duration": 25,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const payload = {\n  orderId: 'o_12345',\n  amount: -50\n};\ncy.request({\n  method: 'POST',\n  url: endpoint,\n  body: payload,\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(400);\n  expect(res.body).to.have.property('error');\n  expect(res.body.error).to.eq('Invalid amount');\n});",
+                  "err": {},
+                  "uuid": "9d59b333-3aef-4339-b47e-463e66cf3bd1",
+                  "parentUUID": "b080073b-bd95-4214-8fdc-dc0e1aac0bef",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should fail when orderId does not exist in order-service",
+                  "fullTitle": "🧾 Payment API - Functional Tests  Invalid Payment Scenarios should fail when orderId does not exist in order-service",
+                  "timedOut": null,
+                  "duration": 28,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const payload = {\n  orderId: 'o_fake_999',\n  amount: 100\n};\ncy.request({\n  method: 'POST',\n  url: endpoint,\n  body: payload,\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(404);\n  expect(res.body).to.have.property('error');\n  expect(res.body.error).to.eq('Order not found');\n});",
+                  "err": {},
+                  "uuid": "02ed5396-6218-4420-a744-2e9fa51424f3",
+                  "parentUUID": "b080073b-bd95-4214-8fdc-dc0e1aac0bef",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "6a166e25-7842-441b-af4a-a71ed5e536f4",
+                "9d59b333-3aef-4339-b47e-463e66cf3bd1",
+                "02ed5396-6218-4420-a744-2e9fa51424f3"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 81,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            }
+          ],
+          "passes": [],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 0,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "mochawesome-report",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}

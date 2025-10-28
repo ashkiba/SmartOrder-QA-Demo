@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SmartOrder Payment Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #result {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Complete Your Payment</h2>
+    <form id="paymentForm">
+      <label for="orderId">Order ID:</label>
+      <input type="text" id="orderId" name="orderId" required>
+
+      <label for="amount">Amount:</label>
+      <input type="number" id="amount" name="amount" required>
+
+      <button type="submit">Pay Now</button>
+    </form>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const orderId = document.getElementById('orderId').value;
+      const amount = parseFloat(document.getElementById('amount').value);
+
+      try {
+        const res = await fetch('http://localhost:3010/api/payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId, amount })
+        });
+        const data = await res.json();
+        const resultDiv = document.getElementById('result');
+        if (data.status === 'SUCCESS') {
+          resultDiv.textContent = data.status + ': ' + data.message;
+          resultDiv.className = 'success';
+        } else {
+          resultDiv.textContent = data.status + ': ' + (data.error || data.message);
+          resultDiv.className = 'error';
+        }
+      } catch (err) {
+        const resultDiv = document.getElementById('result');
+        resultDiv.textContent = 'Request failed';
+        resultDiv.className = 'error';
+      }
+    });
+  </script>
+</body>
+</html>
