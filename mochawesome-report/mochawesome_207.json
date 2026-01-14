@@ -1,0 +1,283 @@
+{
+  "stats": {
+    "suites": 4,
+    "tests": 6,
+    "passes": 0,
+    "pending": 0,
+    "failures": 6,
+    "start": "2026-01-14T06:06:31.353Z",
+    "end": "2026-01-14T06:06:32.798Z",
+    "duration": 1445,
+    "testsRegistered": 6,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "da77c57f-ffc3-4376-92aa-e60aad4a8380",
+      "title": "",
+      "fullFile": "cypress\\e2e\\pay-security.cy.js",
+      "file": "cypress\\e2e\\pay-security.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "cefdaa65-afbc-46b6-acde-08f1d7f29900",
+          "title": "Payment API - Security and Injection Tests",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [],
+          "suites": [
+            {
+              "uuid": "6d9f42ad-9897-4e1e-b9c6-ce6bd4ddf9b3",
+              "title": "Invalid orderId values",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should reject SQL-like injection",
+                  "fullTitle": "Payment API - Security and Injection Tests Invalid orderId values should reject SQL-like injection",
+                  "timedOut": null,
+                  "duration": 241,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.request({\n  method: 'POST',\n  url: endpoint,\n  body: {\n    orderId: \"' OR 1=1 --\",\n    amount: 100\n  },\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq([400, 404]);\n  expect(res.body.status).to.eq('FAILED');\n  expect(res.body).to.have.property('error', 'Invalid orderId');\n});",
+                  "err": {
+                    "message": "AssertionError: expected 400 to equal [ 400, 404 ]",
+                    "estack": "AssertionError: expected 400 to equal [ 400, 404 ]\n    at Context.eval (webpack://smart-order-qa-platform/./cypress/e2e/pay-security.cy.js:12:38)",
+                    "diff": "- 400\n+ [ 400, 404 ]\n"
+                  },
+                  "uuid": "dc11d34d-b981-4af2-9f79-3e2c9da61c4a",
+                  "parentUUID": "6d9f42ad-9897-4e1e-b9c6-ce6bd4ddf9b3",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should reject Unicode injection",
+                  "fullTitle": "Payment API - Security and Injection Tests Invalid orderId values should reject Unicode injection",
+                  "timedOut": null,
+                  "duration": 225,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.request({\n  method: 'POST',\n  url: endpoint,\n  body: {\n    orderId: '💣💥🔥',\n    amount: 100\n  },\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq([400, 404]);\n  expect(res.body.status).to.eq('FAILED');\n  expect(res.body).to.have.property('error', 'Invalid orderId');\n});",
+                  "err": {
+                    "message": "AssertionError: expected 400 to equal [ 400, 404 ]",
+                    "estack": "AssertionError: expected 400 to equal [ 400, 404 ]\n    at Context.eval (webpack://smart-order-qa-platform/./cypress/e2e/pay-security.cy.js:25:38)",
+                    "diff": "- 400\n+ [ 400, 404 ]\n"
+                  },
+                  "uuid": "bb47a201-ec03-46bf-a368-90f36a683e8f",
+                  "parentUUID": "6d9f42ad-9897-4e1e-b9c6-ce6bd4ddf9b3",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should reject excessive whitespace",
+                  "fullTitle": "Payment API - Security and Injection Tests Invalid orderId values should reject excessive whitespace",
+                  "timedOut": null,
+                  "duration": 184,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.request({\n  method: 'POST',\n  url: endpoint,\n  body: {\n    orderId: ' '.repeat(500),\n    amount: 100\n  },\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq([400, 404]);\n  expect(res.body.status).to.eq('FAILED');\n  expect(res.body).to.have.property('error', 'Invalid orderId');\n});",
+                  "err": {
+                    "message": "AssertionError: expected 400 to equal [ 400, 404 ]",
+                    "estack": "AssertionError: expected 400 to equal [ 400, 404 ]\n    at Context.eval (webpack://smart-order-qa-platform/./cypress/e2e/pay-security.cy.js:38:38)",
+                    "diff": "- 400\n+ [ 400, 404 ]\n"
+                  },
+                  "uuid": "524013d6-8804-4037-b045-e53664ace3c8",
+                  "parentUUID": "6d9f42ad-9897-4e1e-b9c6-ce6bd4ddf9b3",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [],
+              "failures": [
+                "dc11d34d-b981-4af2-9f79-3e2c9da61c4a",
+                "bb47a201-ec03-46bf-a368-90f36a683e8f",
+                "524013d6-8804-4037-b045-e53664ace3c8"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 650,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "64307ca2-1816-4984-8e90-249e1edff0ff",
+              "title": "Invalid amount values",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should reject script injection in amount",
+                  "fullTitle": "Payment API - Security and Injection Tests Invalid amount values should reject script injection in amount",
+                  "timedOut": null,
+                  "duration": 187,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.request({\n  method: 'POST',\n  url: endpoint,\n  body: {\n    orderId: 'o_12345',\n    amount: \"<script>100</script>\"\n  },\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq([400, 404]);\n  expect(res.body.status).to.eq('FAILED');\n  expect(res.body).to.have.property('error', 'Invalid amount');\n});",
+                  "err": {
+                    "message": "AssertionError: expected 400 to equal [ 400, 404 ]",
+                    "estack": "AssertionError: expected 400 to equal [ 400, 404 ]\n    at Context.eval (webpack://smart-order-qa-platform/./cypress/e2e/pay-security.cy.js:53:38)",
+                    "diff": "- 400\n+ [ 400, 404 ]\n"
+                  },
+                  "uuid": "f624797c-53d9-4c80-a8af-7ce5879132d8",
+                  "parentUUID": "64307ca2-1816-4984-8e90-249e1edff0ff",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should reject excessively large amount",
+                  "fullTitle": "Payment API - Security and Injection Tests Invalid amount values should reject excessively large amount",
+                  "timedOut": null,
+                  "duration": 197,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.request({\n  method: 'POST',\n  url: endpoint,\n  body: {\n    orderId: 'o_12345',\n    amount: 1e12\n  },\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq([400, 404]);\n  expect(res.body.status).to.eq('FAILED');\n  expect(res.body).to.have.property('error', 'Invalid amount');\n});",
+                  "err": {
+                    "message": "AssertionError: expected 400 to equal [ 400, 404 ]",
+                    "estack": "AssertionError: expected 400 to equal [ 400, 404 ]\n    at Context.eval (webpack://smart-order-qa-platform/./cypress/e2e/pay-security.cy.js:66:38)",
+                    "diff": "- 400\n+ [ 400, 404 ]\n"
+                  },
+                  "uuid": "455b0a5d-df88-4473-b31e-394769bb5e59",
+                  "parentUUID": "64307ca2-1816-4984-8e90-249e1edff0ff",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [],
+              "failures": [
+                "f624797c-53d9-4c80-a8af-7ce5879132d8",
+                "455b0a5d-df88-4473-b31e-394769bb5e59"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 384,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "d3528f7c-456f-488b-bc1c-4626be63721f",
+              "title": "Combined malformed payloads",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should reject mixed invalid orderId and amount",
+                  "fullTitle": "Payment API - Security and Injection Tests Combined malformed payloads should reject mixed invalid orderId and amount",
+                  "timedOut": null,
+                  "duration": 186,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.request({\n  method: 'POST',\n  url: endpoint,\n  body: {\n    orderId: '<script>alert(1)</script>',\n    amount: 'NaN'\n  },\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq([400, 404]);\n  expect(res.body.status).to.eq('FAILED');\n});",
+                  "err": {
+                    "message": "AssertionError: expected 400 to equal [ 400, 404 ]",
+                    "estack": "AssertionError: expected 400 to equal [ 400, 404 ]\n    at Context.eval (webpack://smart-order-qa-platform/./cypress/e2e/pay-security.cy.js:81:38)",
+                    "diff": "- 400\n+ [ 400, 404 ]\n"
+                  },
+                  "uuid": "767102a8-09bd-4d1b-901f-af4ca4032958",
+                  "parentUUID": "d3528f7c-456f-488b-bc1c-4626be63721f",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [],
+              "failures": [
+                "767102a8-09bd-4d1b-901f-af4ca4032958"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 186,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            }
+          ],
+          "passes": [],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 0,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "mochawesome-report",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}
