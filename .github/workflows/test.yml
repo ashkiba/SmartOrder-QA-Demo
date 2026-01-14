@@ -19,6 +19,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm' # اضافه شدن برای سرعت بیلد (امتیاز مثبت در رزومه)
 
       - name: Install order-service dependencies
         working-directory: backend/order-service
@@ -29,8 +30,7 @@ jobs:
         run: |
           nohup npm run start > order.log 2>&1 &
           sleep 5
-          echo "Checking order-service..."
-          curl -sS -I http://localhost:3020/api/order/o_12345 || (echo "order-service not responding" && cat order.log && exit 1)
+          curl -sS -I http://localhost:3020/api/order/o_12345 || (echo "order-service failed" && cat order.log && exit 1)
 
       - name: Install payment-service dependencies
         working-directory: backend/payment-service
@@ -41,58 +41,44 @@ jobs:
         run: |
           nohup npm run start > payment.log 2>&1 &
           sleep 5
-          echo "Checking payment-service..."
-          curl -sS -I http://localhost:3010/api/payment || (echo "payment-service not responding" && cat payment.log && exit 1)
+          curl -sS -I http://localhost:3010/api/payment || (echo "payment-service failed" && cat payment.log && exit 1)
 
       - name: Install frontend dependencies
         working-directory: frontend
         run: npm ci
 
-      - name: Start frontend server (background) and wait for readiness
+      - name: Start frontend server and wait
         working-directory: frontend
         run: |
           nohup node server.js > frontend.log 2>&1 &
-          FRONTEND_PID=$!
-          echo "Frontend PID: $FRONTEND_PID"
-          n=0
-          until curl -sS http://localhost:8080/payment-form.html >/dev/null 2>&1 || [ $n -ge 60 ]; do
-            echo "waiting for frontend... ($n)"
-            n=$((n+1))
-            sleep 1
-          done
-          if curl -sS http://localhost:8080/payment-form.html >/dev/null 2>&1; then
-            echo "frontend up"
-            echo "first 200 lines of frontend.log:"
-            sed -n '1,200p' frontend.log || true
-          else
-            echo "frontend did not start - dumping logs and exiting"
-            echo "last 200 lines of frontend.log:"
-            tail -n 200 frontend.log || true
-            ps aux | grep node || true
-            exit 1
-          fi
+          # بهینه‌سازی: استفاده از یک حلقه ساده‌تر برای چک کردن سلامت فرانت‌اِند
+          timeout 60s bash -c 'until curl -s http://localhost:8080/payment-form.html; do echo "waiting..."; sleep 2; done'
 
       - name: Install root dependencies
-        run: npm ci
+        # استفاده از install به جای ci برای حل مشکل ناهماهنگی که در عکس 2 و 5 داشتی
+        run: npm install 
 
       - name: Install Cypress binary
         run: npx cypress install
 
       - name: Run Cypress tests with mochawesome
         env:
-          CYPRESS_baseUrl: http://localhost:3010
-        run: npm run test:report
+          # اصلاح پورت: Cypress باید به فرانت‌اِند (8080) وصل شود نه بک‌اِند (3010)
+          CYPRESS_baseUrl: http://localhost:8080
+        # حل ارور Missing script: اجرای مستقیم دستور به جای npm run test:report
+        run: npx cypress run --reporter mochawesome
 
-      - name: Upload Cypress videos and screenshots on failure
-        if: failure()
+      - name: Upload Cypress artifacts
+        if: failure() # فقط در صورت شکست تست‌ها برای دیباگ
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-artifacts
+          name: cypress-screenshots-videos
           path: |
             cypress/videos
             cypress/screenshots
 
       - name: Upload mochawesome report
+        if: always() # همیشه آپلود شود تا گزارش را ببینیم
         uses: actions/upload-artifact@v4
         with:
           name: mochawesome-report

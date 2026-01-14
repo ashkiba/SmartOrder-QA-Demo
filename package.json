@@ -7,8 +7,8 @@
     "frontend",
     "backend/order-service",
     "backend/payment-service"
-  ]
-"scripts": {
+  ],
+  "scripts": {
     "clean": "npx kill-port 8080 3010 3020",
     "start:order": "node backend/order-service/index.js",
     "start:payment": "node backend/payment-service/index.js",
