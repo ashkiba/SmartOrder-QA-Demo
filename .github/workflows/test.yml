@@ -19,11 +19,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm' # سرعت بیلد را برای رزومه بالا می‌برد
+          cache: 'npm' 
 
       - name: Install order-service dependencies
         working-directory: backend/order-service
-        # تغییر از ci به install برای عبور از سد ارور ناهماهنگی فایل لاک (تصویر 7)
         run: npm install 
 
       - name: Start order-service in background
@@ -52,7 +51,6 @@ jobs:
         working-directory: frontend
         run: |
           nohup node server.js > frontend.log 2>&1 &
-          # منطق انتظار شما با اصلاح آدرس
           n=0
           until curl -sS http://localhost:8080/payment-form.html >/dev/null 2>&1 || [ $n -ge 60 ]; do
             echo "waiting for frontend... ($n)"
@@ -61,7 +59,6 @@ jobs:
           done
 
       - name: Install root dependencies
-        # حل ارور تصویر 5
         run: npm install 
 
       - name: Install Cypress binary
@@ -69,9 +66,7 @@ jobs:
 
       - name: Run Cypress tests with mochawesome
         env:
-          # پورت فرانت‌اند 8080 است (تصویر 4 نشان داد روی 3010 اسکریپت پیدا نمی‌شد)
           CYPRESS_baseUrl: http://localhost:3010
-        # استفاده از npx مستقیم برای حل ارور Missing script (تصویر 4)
         run: npx cypress run --reporter mochawesome
 
       - name: Upload Cypress videos and screenshots on failure
@@ -89,3 +84,8 @@ jobs:
         with:
           name: mochawesome-report
           path: mochawesome-report/
+        
+     - name: Run All Tests (Cypress & Playwright)
+        env:
+          CYPRESS_baseUrl: http://localhost:8080
+        run: npm run test:only
