@@ -1,12 +1,26 @@
 ﻿{
-    "version":  "1.0.0",
-    "name":  "smartorder-frontend",
-    "description":  "Frontend server for SmartOrder QA Demo",
-    "scripts":  {
-                    "start":  "node server.js"
-                },
-    "dependencies":  {
-                         "express":  "^4.18.2"
-                     },
-    "main":  "server.js"
+  "name": "smart-order-qa-platform",
+  "version": "2.0.0",
+  "description": "AI-Augmented QA Framework for Logistics & Fintech ecosystems",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run --browser chrome",
+    "pw:test": "playwright test",
+    "pw:report": "playwright show-report",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "cypress": "^13.15.0",
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0",
+    "mochawesome": "^7.1.3"
+  },
+  "dependencies": {
+    "express": "^5.0.0",
+    "axios": "^1.6.0"
+  }
 }

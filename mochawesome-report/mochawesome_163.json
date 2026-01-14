@@ -1,0 +1,143 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 3,
+    "passes": 3,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-01-14T04:15:35.229Z",
+    "end": "2026-01-14T04:15:39.591Z",
+    "duration": 4362,
+    "testsRegistered": 3,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "b9d1ff7d-cf25-46fa-a54f-45ebf2fe5555",
+      "title": "",
+      "fullFile": "cypress\\e2e\\pay-ui.cy.js",
+      "file": "cypress\\e2e\\pay-ui.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "5cfa5c2d-a5cb-4a2f-9ab4-fdb98313cf82",
+          "title": "Payment Form UI Test",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should submit valid payment and show success message",
+              "fullTitle": "Payment Form UI Test should submit valid payment and show success message",
+              "timedOut": null,
+              "duration": 1236,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('#orderId').type('o_12345');\ncy.get('#amount').type('100');\ncy.get('button[type=\"submit\"]').click();\ncy.get('#result', {\n  timeout: 5000\n}).should('contain.text', 'SUCCESS');\ncy.screenshot('valid-payment-success');",
+              "err": {},
+              "uuid": "ab89ce85-e035-499a-809f-c75a26859ca2",
+              "parentUUID": "5cfa5c2d-a5cb-4a2f-9ab4-fdb98313cf82",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should show error for invalid orderId",
+              "fullTitle": "Payment Form UI Test should show error for invalid orderId",
+              "timedOut": null,
+              "duration": 768,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('#orderId').type('💣💥🔥');\ncy.get('#amount').type('100');\ncy.get('button[type=\"submit\"]').click();\ncy.get('#result', {\n  timeout: 5000\n}).should('contain.text', 'FAILED');\ncy.screenshot('invalid-orderId-error');",
+              "err": {},
+              "uuid": "3aebd128-6ddc-4f17-b9cf-bd8662462452",
+              "parentUUID": "5cfa5c2d-a5cb-4a2f-9ab4-fdb98313cf82",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should show error for amount mismatch",
+              "fullTitle": "Payment Form UI Test should show error for amount mismatch",
+              "timedOut": null,
+              "duration": 763,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('#orderId').type('o_12345');\ncy.get('#amount').type('999');\ncy.get('button[type=\"submit\"]').click();\ncy.get('#result', {\n  timeout: 5000\n}).should('contain.text', 'FAILED');\ncy.screenshot('amount-mismatch-error');",
+              "err": {},
+              "uuid": "8bea69e1-f1f9-469a-82cd-8982dd63ca1e",
+              "parentUUID": "5cfa5c2d-a5cb-4a2f-9ab4-fdb98313cf82",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "ab89ce85-e035-499a-809f-c75a26859ca2",
+            "3aebd128-6ddc-4f17-b9cf-bd8662462452",
+            "8bea69e1-f1f9-469a-82cd-8982dd63ca1e"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 2767,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "mochawesome-report",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}

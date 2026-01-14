@@ -1,0 +1,109 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "start": "2026-01-13T08:29:24.226Z",
+    "end": "2026-01-13T08:29:28.468Z",
+    "duration": 4242,
+    "testsRegistered": 1,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "ab7ca316-6ac7-460c-b4b1-cf721fed2fd1",
+      "title": "",
+      "fullFile": "cypress\\e2e\\pay.cy.js",
+      "file": "cypress\\e2e\\pay.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "7e22d5f5-fc56-405a-8345-91f78fffebd1",
+          "title": "Payment Flow with POM",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should process a valid payment",
+              "fullTitle": "Payment Flow with POM should process a valid payment",
+              "timedOut": null,
+              "duration": 4199,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "_PaymentPage.paymentPage.submitPayment('o_12345', '100');\n_PaymentPage.paymentPage.verifySuccess();",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `#orderid`, but never found it.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `#orderid`, but never found it.\n    at get orderIdInput [as orderIdInput] (webpack://smart-order-qa-platform/./cypress/support/pages/PaymentPage.js:4:33)\n    at PaymentPage.submitPayment (webpack://smart-order-qa-platform/./cypress/support/pages/PaymentPage.js:14:22)\n    at Context.eval (webpack://smart-order-qa-platform/./cypress/e2e/pay.cy.js:9:16)",
+                "diff": null
+              },
+              "uuid": "53d2e733-f11c-418a-87cb-b2c2489ce005",
+              "parentUUID": "7e22d5f5-fc56-405a-8345-91f78fffebd1",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "53d2e733-f11c-418a-87cb-b2c2489ce005"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 4199,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "mochawesome-report",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}

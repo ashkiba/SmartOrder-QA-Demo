@@ -1,0 +1,243 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "start": "2026-01-13T08:29:14.538Z",
+    "end": "2026-01-13T08:29:14.845Z",
+    "duration": 307,
+    "testsRegistered": 8,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 7,
+    "hasSkipped": true
+  },
+  "results": [
+    {
+      "uuid": "f578636f-3b67-4e91-9de3-a06aa8a656ca",
+      "title": "",
+      "fullFile": "cypress\\e2e\\pay-advanced.cy.js",
+      "file": "cypress\\e2e\\pay-advanced.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "58b3cd08-f0ce-4eae-998b-49f591e55770",
+          "title": "Payment API - Advanced Scenarios",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should prevent duplicate payment for the same order",
+              "fullTitle": "Payment API - Advanced Scenarios should prevent duplicate payment for the same order",
+              "timedOut": null,
+              "duration": 221,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const payload = {\n  orderId: 'o_adv_001',\n  amount: 100\n};\ncy.request({\n  method: 'POST',\n  url: endpoint,\n  body: payload,\n  failOnStatusCode: false\n}).then(res1 => {\n  expect(res1.status).to.eq(200);\n  expect(res1.body.status).to.eq('SUCCESS');\n  cy.request({\n    method: 'POST',\n    url: endpoint,\n    body: payload,\n    failOnStatusCode: false\n  }).then(res2 => {\n    expect(res2.status).to.eq(409);\n    expect(res2.body.status).to.eq('FAILED');\n    expect(res2.body.error).to.eq('Duplicate payment');\n  });\n});",
+              "err": {
+                "message": "CypressError: `cy.request()` failed on:\n\nhttp://localhost:8080/api/reset-payments\n\nThe response we received from your web server was:\n\n  > 405: Method Not Allowed\n\nThis was considered a failure because the status code was not `2xx` or `3xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`\n\n-----------------------------------------------------------\n\nThe request we sent was:\n\nMethod: POST\nURL: http://localhost:8080/api/reset-payments\nHeaders: {\n  \"Connection\": \"keep-alive\",\n  \"user-agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Cypress/13.17.0 Chrome/118.0.5993.159 Electron/27.3.10 Safari/537.36\",\n  \"accept\": \"*/*\",\n  \"accept-encoding\": \"gzip, deflate\",\n  \"content-length\": 0\n}\n\n-----------------------------------------------------------\n\nThe response we got was:\n\nStatus: 405 - Method Not Allowed\nHeaders: {\n  \"accept-ranges\": \"bytes\",\n  \"date\": \"Tue, 13 Jan 2026 08:29:14 GMT\",\n  \"connection\": \"keep-alive\",\n  \"keep-alive\": \"timeout=5\",\n  \"content-length\": \"0\"\n}\nBody: \n\n\nhttps://on.cypress.io/request\n\nBecause this error occurred during a `before all` hook we are skipping the remaining tests in the current suite: `Payment API - Advanced Scen...`",
+                "estack": "CypressError: `cy.request()` failed on:\n\nhttp://localhost:8080/api/reset-payments\n\nThe response we received from your web server was:\n\n  > 405: Method Not Allowed\n\nThis was considered a failure because the status code was not `2xx` or `3xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`\n\n-----------------------------------------------------------\n\nThe request we sent was:\n\nMethod: POST\nURL: http://localhost:8080/api/reset-payments\nHeaders: {\n  \"Connection\": \"keep-alive\",\n  \"user-agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Cypress/13.17.0 Chrome/118.0.5993.159 Electron/27.3.10 Safari/537.36\",\n  \"accept\": \"*/*\",\n  \"accept-encoding\": \"gzip, deflate\",\n  \"content-length\": 0\n}\n\n-----------------------------------------------------------\n\nThe response we got was:\n\nStatus: 405 - Method Not Allowed\nHeaders: {\n  \"accept-ranges\": \"bytes\",\n  \"date\": \"Tue, 13 Jan 2026 08:29:14 GMT\",\n  \"connection\": \"keep-alive\",\n  \"keep-alive\": \"timeout=5\",\n  \"content-length\": \"0\"\n}\nBody: \n\n\nhttps://on.cypress.io/request\n\nBecause this error occurred during a `before all` hook we are skipping the remaining tests in the current suite: `Payment API - Advanced Scen...`\n    at <unknown> (http://localhost:8080/__cypress/runner/cypress_runner.js:132876:72)\n    at tryCatcher (http://localhost:8080/__cypress/runner/cypress_runner.js:1830:23)\n    at Promise._settlePromiseFromHandler (http://localhost:8080/__cypress/runner/cypress_runner.js:1542:31)\n    at Promise._settlePromise (http://localhost:8080/__cypress/runner/cypress_runner.js:1599:18)\n    at Promise._settlePromise0 (http://localhost:8080/__cypress/runner/cypress_runner.js:1644:10)\n    at Promise._settlePromises (http://localhost:8080/__cypress/runner/cypress_runner.js:1724:18)\n    at _drainQueueStep (http://localhost:8080/__cypress/runner/cypress_runner.js:2430:12)\n    at _drainQueue (http://localhost:8080/__cypress/runner/cypress_runner.js:2423:9)\n    at Async._drainQueues (http://localhost:8080/__cypress/runner/cypress_runner.js:2439:5)\n    at Async.drainQueues (http://localhost:8080/__cypress/runner/cypress_runner.js:2309:14)\nFrom Your Spec Code:\n    at Context.eval (webpack://smart-order-qa-platform/./cypress/e2e/pay-advanced.cy.js:5:11)",
+                "diff": null
+              },
+              "uuid": "3a3d7f6f-993d-421e-bfb8-3ce07ac01e5f",
+              "parentUUID": "58b3cd08-f0ce-4eae-998b-49f591e55770",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should fail if amount does not match order total",
+              "fullTitle": "Payment API - Advanced Scenarios should fail if amount does not match order total",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const payload = {\n  orderId: 'o_12345',\n  amount: 999\n};\ncy.request({\n  method: 'POST',\n  url: endpoint,\n  body: payload,\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(400);\n  expect(res.body.status).to.eq('FAILED');\n  expect(res.body.error).to.eq('Amount mismatch');\n});",
+              "err": {},
+              "uuid": "2df6094e-150c-4ac2-bf95-0fb85ee75e63",
+              "parentUUID": "58b3cd08-f0ce-4eae-998b-49f591e55770",
+              "isHook": false,
+              "skipped": true
+            },
+            {
+              "title": "should handle delayed response from order-service",
+              "fullTitle": "Payment API - Advanced Scenarios should handle delayed response from order-service",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const payload = {\n  orderId: 'o_slow',\n  amount: 100\n};\ncy.request({\n  method: 'POST',\n  url: endpoint,\n  body: payload,\n  timeout: 10000,\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(200);\n  expect(res.body.status).to.eq('SUCCESS');\n});",
+              "err": {},
+              "uuid": "128884b2-60d2-4821-b271-21afd757191a",
+              "parentUUID": "58b3cd08-f0ce-4eae-998b-49f591e55770",
+              "isHook": false,
+              "skipped": true
+            },
+            {
+              "title": "should fail if order-service is unreachable or order is missing",
+              "fullTitle": "Payment API - Advanced Scenarios should fail if order-service is unreachable or order is missing",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const payload = {\n  orderId: 'o_broken',\n  amount: 100\n};\ncy.request({\n  method: 'POST',\n  url: endpoint,\n  body: payload,\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(404);\n  expect(res.body.status).to.eq('FAILED');\n  expect(res.body.error).to.eq('Order not found');\n});",
+              "err": {},
+              "uuid": "e0437fe7-ad28-4e35-9ba7-226c52f34c13",
+              "parentUUID": "58b3cd08-f0ce-4eae-998b-49f591e55770",
+              "isHook": false,
+              "skipped": true
+            },
+            {
+              "title": "should fail if orderId contains script injection",
+              "fullTitle": "Payment API - Advanced Scenarios should fail if orderId contains script injection",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const payload = {\n  orderId: '<script>alert(1)</script>',\n  amount: 100\n};\ncy.request({\n  method: 'POST',\n  url: endpoint,\n  body: payload,\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(400);\n  expect(res.body.status).to.eq('FAILED');\n});",
+              "err": {},
+              "uuid": "20ef9ca4-1819-447d-8c9a-72a539532ba4",
+              "parentUUID": "58b3cd08-f0ce-4eae-998b-49f591e55770",
+              "isHook": false,
+              "skipped": true
+            },
+            {
+              "title": "should fail if amount contains script injection",
+              "fullTitle": "Payment API - Advanced Scenarios should fail if amount contains script injection",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const payload = {\n  orderId: 'o_12345',\n  amount: \"<script>100</script>\"\n};\ncy.request({\n  method: 'POST',\n  url: endpoint,\n  body: payload,\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(400);\n  expect(res.body.status).to.eq('FAILED');\n});",
+              "err": {},
+              "uuid": "0e905e05-5388-4a62-86b2-e4b8b45618e9",
+              "parentUUID": "58b3cd08-f0ce-4eae-998b-49f591e55770",
+              "isHook": false,
+              "skipped": true
+            },
+            {
+              "title": "should fail if orderId is null",
+              "fullTitle": "Payment API - Advanced Scenarios should fail if orderId is null",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const payload = {\n  orderId: null,\n  amount: 100\n};\ncy.request({\n  method: 'POST',\n  url: endpoint,\n  body: payload,\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(400);\n  expect(res.body.status).to.eq('FAILED');\n  expect(res.body.error).to.eq('Missing orderId');\n});",
+              "err": {},
+              "uuid": "020a947f-8b79-4290-961a-23205db001ef",
+              "parentUUID": "58b3cd08-f0ce-4eae-998b-49f591e55770",
+              "isHook": false,
+              "skipped": true
+            },
+            {
+              "title": "should fail if amount is extremely large",
+              "fullTitle": "Payment API - Advanced Scenarios should fail if amount is extremely large",
+              "timedOut": null,
+              "duration": 0,
+              "state": "skipped",
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const payload = {\n  orderId: 'o_12345',\n  amount: 999999999999999999999\n};\ncy.request({\n  method: 'POST',\n  url: endpoint,\n  body: payload,\n  failOnStatusCode: false\n}).then(res => {\n  expect(res.status).to.eq(400);\n  expect(res.body.status).to.eq('FAILED');\n});",
+              "err": {},
+              "uuid": "06f59017-6a97-4397-b6cc-7c1f489212a0",
+              "parentUUID": "58b3cd08-f0ce-4eae-998b-49f591e55770",
+              "isHook": false,
+              "skipped": true
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "3a3d7f6f-993d-421e-bfb8-3ce07ac01e5f"
+          ],
+          "pending": [],
+          "skipped": [
+            "2df6094e-150c-4ac2-bf95-0fb85ee75e63",
+            "128884b2-60d2-4821-b271-21afd757191a",
+            "e0437fe7-ad28-4e35-9ba7-226c52f34c13",
+            "20ef9ca4-1819-447d-8c9a-72a539532ba4",
+            "0e905e05-5388-4a62-86b2-e4b8b45618e9",
+            "020a947f-8b79-4290-961a-23205db001ef",
+            "06f59017-6a97-4397-b6cc-7c1f489212a0"
+          ],
+          "duration": 221,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "mochawesome-report",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.0"
+    }
+  }
+}
