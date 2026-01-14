@@ -19,11 +19,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm' # اضافه شدن برای سرعت بیلد (امتیاز مثبت در رزومه)
+          cache: 'npm' # سرعت بیلد را برای رزومه بالا می‌برد
 
       - name: Install order-service dependencies
         working-directory: backend/order-service
-        run: npm ci
+        # تغییر از ci به install برای عبور از سد ارور ناهماهنگی فایل لاک (تصویر 7)
+        run: npm install 
 
       - name: Start order-service in background
         working-directory: backend/order-service
@@ -34,7 +35,7 @@ jobs:
 
       - name: Install payment-service dependencies
         working-directory: backend/payment-service
-        run: npm ci
+        run: npm install
 
       - name: Start payment-service in background
         working-directory: backend/payment-service
@@ -45,17 +46,22 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: frontend
-        run: npm ci
+        run: npm install
 
-      - name: Start frontend server and wait
+      - name: Start frontend server (background) and wait for readiness
         working-directory: frontend
         run: |
           nohup node server.js > frontend.log 2>&1 &
-          # بهینه‌سازی: استفاده از یک حلقه ساده‌تر برای چک کردن سلامت فرانت‌اِند
-          timeout 60s bash -c 'until curl -s http://localhost:8080/payment-form.html; do echo "waiting..."; sleep 2; done'
+          # منطق انتظار شما با اصلاح آدرس
+          n=0
+          until curl -sS http://localhost:8080/payment-form.html >/dev/null 2>&1 || [ $n -ge 60 ]; do
+            echo "waiting for frontend... ($n)"
+            n=$((n+1))
+            sleep 1
+          done
 
       - name: Install root dependencies
-        # استفاده از install به جای ci برای حل مشکل ناهماهنگی که در عکس 2 و 5 داشتی
+        # حل ارور تصویر 5
         run: npm install 
 
       - name: Install Cypress binary
@@ -63,22 +69,22 @@ jobs:
 
       - name: Run Cypress tests with mochawesome
         env:
-          # اصلاح پورت: Cypress باید به فرانت‌اِند (8080) وصل شود نه بک‌اِند (3010)
+          # پورت فرانت‌اند 8080 است (تصویر 4 نشان داد روی 3010 اسکریپت پیدا نمی‌شد)
           CYPRESS_baseUrl: http://localhost:8080
-        # حل ارور Missing script: اجرای مستقیم دستور به جای npm run test:report
+        # استفاده از npx مستقیم برای حل ارور Missing script (تصویر 4)
         run: npx cypress run --reporter mochawesome
 
-      - name: Upload Cypress artifacts
-        if: failure() # فقط در صورت شکست تست‌ها برای دیباگ
+      - name: Upload Cypress videos and screenshots on failure
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-screenshots-videos
+          name: cypress-artifacts
           path: |
             cypress/videos
             cypress/screenshots
 
       - name: Upload mochawesome report
-        if: always() # همیشه آپلود شود تا گزارش را ببینیم
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mochawesome-report
