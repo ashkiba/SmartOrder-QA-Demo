@@ -70,7 +70,7 @@ jobs:
       - name: Run Cypress tests with mochawesome
         env:
           # پورت فرانت‌اند 8080 است (تصویر 4 نشان داد روی 3010 اسکریپت پیدا نمی‌شد)
-          CYPRESS_baseUrl: http://localhost:8080
+          CYPRESS_baseUrl: http://localhost:3010
         # استفاده از npx مستقیم برای حل ارور Missing script (تصویر 4)
         run: npx cypress run --reporter mochawesome
 
