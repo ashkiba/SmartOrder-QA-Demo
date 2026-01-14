@@ -1,4 +1,4 @@
-name: Run Cypress Tests
+name: Run Cypress and Playwright Tests
 
 on:
   push:
@@ -64,10 +64,18 @@ jobs:
       - name: Install Cypress binary
         run: npx cypress install
 
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
       - name: Run Cypress tests with mochawesome
         env:
-          CYPRESS_baseUrl: http://localhost:3010
+          CYPRESS_baseUrl: http://localhost:8080 
         run: npx cypress run --reporter mochawesome
+
+      - name: Run All Tests (Cypress & Playwright)
+        env:
+          CYPRESS_baseUrl: http://localhost:8080
+        run: npm run test:only
 
       - name: Upload Cypress videos and screenshots on failure
         if: failure()
@@ -84,8 +92,10 @@ jobs:
         with:
           name: mochawesome-report
           path: mochawesome-report/
-        
-     - name: Run All Tests (Cypress & Playwright)
-        env:
-          CYPRESS_baseUrl: http://localhost:8080
-        run: npm run test:only
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
