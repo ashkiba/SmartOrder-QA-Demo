@@ -3,6 +3,11 @@
   "version": "2.0.0",
   "description": "AI-Augmented QA Framework for Logistics & Fintech ecosystems",
   "main": "index.js",
+  "workspaces": [
+    "frontend",
+    "backend/order-service",
+    "backend/payment-service"
+  ]
 "scripts": {
     "clean": "npx kill-port 8080 3010 3020",
     "start:order": "node backend/order-service/index.js",
@@ -11,6 +16,7 @@
     "test:only": "npm run cy:run && npm run pw:test",
     "cy:run": "cypress run",
     "pw:test": "playwright test",
+    "test:report": "cypress run --reporter mochawesome",
     "test:all": "npm run clean && npx concurrently -k -n \"ORDER,PAYMENT,FRONT,TESTS\" -c \"bgBlue,bgMagenta,bgCyan,bgGreen\" \"npm run start:order\" \"npm run start:payment\" \"npm run start:frontend\" \"npx wait-on -t 30000 tcp:127.0.0.1:8080 && npm run test:only\""
   },
   "devDependencies": {
